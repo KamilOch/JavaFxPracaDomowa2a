@@ -13,7 +13,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 
-
 public class MainPracaDomowa2a extends Application {
 
     @Override
@@ -28,22 +27,29 @@ public class MainPracaDomowa2a extends Application {
             buttonBox.setPadding(new Insets(55));
             Button loadPictureButton = new Button("Wczytaj");
             Button clearButton = new Button("Czyść");
-            buttonBox.getChildren().addAll(loadPictureButton,clearButton);
+            buttonBox.getChildren().addAll(loadPictureButton, clearButton);
 
             Label text = new Label("Wycinki w kolejności malejącej średniej wartości składowej czerwonej.");
-      
-           Rectangle clippedImage = new Rectangle(100,200,41,41);
-           clippedImage.setStroke(Color.BLACK);
-           clippedImage.setFill(Color.WHITE);
-           clippedImage.setStrokeWidth(3);
 
-    
-
+            Rectangle clippedImage = new Rectangle(100, 200, 41, 41);
+            clippedImage.setStroke(Color.BLACK);
+            clippedImage.setFill(Color.WHITE);
+            clippedImage.setStrokeWidth(3);
 
             VBox buttonsLanelBox = new VBox();
-            buttonsLanelBox.getChildren().addAll(buttonBox,text, clippedImage);
-            root.getChildren().add(buttonsLanelBox);
+            buttonsLanelBox.getChildren().addAll(buttonBox, text, clippedImage);
 
+            Rectangle mainPicture = new Rectangle(50, 50, 500, 700);
+            mainPicture.setStroke(Color.BLACK);
+            mainPicture.setStrokeWidth(4);
+            mainPicture.setFill(Color.WHITE);
+
+            HBox pictureAndInformation = new HBox(10);
+            pictureAndInformation.getChildren().addAll(mainPicture, buttonsLanelBox);
+            pictureAndInformation.setLayoutX(30);
+            pictureAndInformation.setLayoutY(30);
+
+            root.getChildren().add(pictureAndInformation);
 
             primaryStage.setScene(scene);
             primaryStage.show();
