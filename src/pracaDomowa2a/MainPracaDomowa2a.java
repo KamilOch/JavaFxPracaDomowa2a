@@ -9,6 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -43,6 +46,13 @@ public class MainPracaDomowa2a extends Application {
             mainPicture.setStroke(Color.BLACK);
             mainPicture.setStrokeWidth(4);
             mainPicture.setFill(Color.WHITE);
+
+            LinearGradient linearGradient = new LinearGradient(0.7,0,1,0.7,true, CycleMethod.REFLECT,
+                    new Stop(0,Color.BLUE),
+                    new Stop(0.5,Color.RED),
+                    new Stop(1,Color.GREEN)
+            );
+            mainPicture.setFill(linearGradient);
 
             HBox pictureAndInformation = new HBox(10);
             pictureAndInformation.getChildren().addAll(mainPicture, buttonsLanelBox);
