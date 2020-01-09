@@ -24,12 +24,15 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class MainPracaDomowa2a extends Application {
 
+    private CuttedElement cuttedElement;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         try {
 
             Group root = new Group();
@@ -55,7 +58,7 @@ public class MainPracaDomowa2a extends Application {
 
             List<Rectangle> clippedImages = new ArrayList<>();
 
-            for (int i = 0; i <= 25; i++) {
+            for (int i = 0; i < 25; i++) {
 
                 Rectangle clippedImage = new Rectangle(41, 41);
                 clippedImage.setStroke(Color.BLACK);
@@ -80,53 +83,32 @@ public class MainPracaDomowa2a extends Application {
 
             Image image = new Image(
                     getClass().getResourceAsStream("test2.png"));
-            // for tests
-            //getClass().getResourceAsStream("test.png"));
+                    // for tests
+                    //getClass().getResourceAsStream("test.png"));
 
             gc.drawImage(image, 30, 30);
-            List<WritableImage> cutedImages= new ArrayList<>();
+
+            List<CuttedElement> cuttedElements = new ArrayList<>();
 
             canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
                 @Override
                 public void handle(MouseEvent event) {
                     PixelReader reader = image.getPixelReader();
                     WritableImage newImage = new WritableImage(reader, (int) event.getX() - 41, (int) event.getY() - 41, 41, 41);
 
-                    cutedImages.add(newImage);
+                    cuttedElements.add(new CuttedElement(newImage));
 
-                   // int averageValueOfRed = calculateAvetageValueRed(newImage);
+                    List<CuttedElement> cutedImagesSorter = cuttedElements
+                            .stream()
+                            .sorted(Comparator.comparingInt(CuttedElement::getAverageValueOfRed).reversed())
+                            .collect(Collectors.toList());
 
-                    List<WritableImage> cutedImagesSorter = cutedImages.sortByAverageValueOfRed();
-
-                    for(int i= 0 ; i<clippedImages.size(); i++){
-                        clippedImages.get(i).setFill(cutedImagesSorter.get(i));
-                    }
-
-
-                    //TODO
-
-                }
-
-                private List<WritableImage> sortByAverageValueOfRed(){
-
-                    return
-                }
-
-                private int calculateAvetageValueRed(WritableImage newImage) {
-
-                    int pixel ;
-                    int redValue = 0;
-                    int width = (int) newImage.getWidth();
-                    int height = (int) newImage.getHeight();
-
-                    for (int x = 0; x < width; x++) {
-                        for (int y = 0; y < height; y++) {
-                            pixel = newImage.getPixelReader().getArgb(x,y);
-                            redValue += (pixel >> 16) & 0xff;
+                    for (int i = 0; i < clippedImages.size(); i++) {
+                        if (cutedImagesSorter.size() > i) {
+                            clippedImages.get(i).setFill(new ImagePattern(cutedImagesSorter.get(i).getImage()));
                         }
                     }
-
-                    return redValue / (width * height);
                 }
             });
 
