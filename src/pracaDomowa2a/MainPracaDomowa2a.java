@@ -83,8 +83,8 @@ public class MainPracaDomowa2a extends Application {
 
             Image image = new Image(
                     getClass().getResourceAsStream("test2.png"));
-                    // for tests
-                    //getClass().getResourceAsStream("test.png"));
+            // for tests
+            //getClass().getResourceAsStream("test.png"));
 
             gc.drawImage(image, 30, 30);
 
@@ -110,6 +110,14 @@ public class MainPracaDomowa2a extends Application {
                         }
                     }
                 }
+            });
+
+            clearButton.setOnAction(event -> {
+                for (Rectangle clippedImage : clippedImages) {
+                    clippedImage.setFill(Color.TRANSPARENT);
+                    cuttedElements.clear();
+                }
+
             });
 
             HBox pictureAndInformation = new HBox(10);
