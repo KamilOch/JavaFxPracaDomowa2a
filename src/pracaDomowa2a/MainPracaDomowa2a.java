@@ -1,18 +1,23 @@
 package pracaDomowa2a;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -29,6 +34,9 @@ public class MainPracaDomowa2a extends Application {
             Group root = new Group();
             Scene scene = new Scene(root, 1100, 780);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+            Canvas canvas = new Canvas(500, 700);
+            GraphicsContext gc = canvas.getGraphicsContext2D();
 
             HBox buttonBox = new HBox(10);
             buttonBox.setPadding(new Insets(55));
@@ -57,32 +65,38 @@ public class MainPracaDomowa2a extends Application {
             }
 
             int y = 0;
-            for (int i = 0; i<5;i++) {
+            for (int i = 0; i < 5; i++) {
                 clippedImagesGrid.add(clippedImages.get(y), 0, i);
-                clippedImagesGrid.add(clippedImages.get(1+y), 1, i);
-                clippedImagesGrid.add(clippedImages.get(2+y), 2, i);
-                clippedImagesGrid.add(clippedImages.get(3+y), 3, i);
-                clippedImagesGrid.add(clippedImages.get(4+y), 4, i);
-                y = y +5;
+                clippedImagesGrid.add(clippedImages.get(1 + y), 1, i);
+                clippedImagesGrid.add(clippedImages.get(2 + y), 2, i);
+                clippedImagesGrid.add(clippedImages.get(3 + y), 3, i);
+                clippedImagesGrid.add(clippedImages.get(4 + y), 4, i);
+                y = y + 5;
             }
 
             VBox buttonsLanelBox = new VBox();
             buttonsLanelBox.getChildren().addAll(buttonBox, text, clippedImagesGrid);
 
-            Rectangle mainPicture = new Rectangle(50, 50, 500, 700);
-            mainPicture.setStroke(Color.BLACK);
-            mainPicture.setStrokeWidth(4);
-            mainPicture.setFill(Color.WHITE);
+            Image image = new Image(
+                    getClass().getResourceAsStream("test2.png"));
+                    //getClass().getResourceAsStream("test.png"));
 
-            LinearGradient linearGradient = new LinearGradient(0.7, 0, 1, 0.7, true, CycleMethod.REFLECT,
-                    new Stop(0, Color.BLUE),
-                    new Stop(0.5, Color.RED),
-                    new Stop(1, Color.GREEN)
-            );
-            mainPicture.setFill(linearGradient);
+            gc.drawImage(image, 30, 30);
+
+            canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    PixelReader reader = image.getPixelReader();
+                    WritableImage newImage = new WritableImage(reader, (int) event.getX() - 41, (int) event.getY() - 41, 41, 41);
+
+                    clippedImages.get(0).setFill(new ImagePattern(newImage));
+                    //TODO
+
+                }
+            });
 
             HBox pictureAndInformation = new HBox(10);
-            pictureAndInformation.getChildren().addAll(mainPicture, buttonsLanelBox);
+            pictureAndInformation.getChildren().addAll(canvas, buttonsLanelBox);
             pictureAndInformation.setLayoutX(30);
             pictureAndInformation.setLayoutY(30);
 
