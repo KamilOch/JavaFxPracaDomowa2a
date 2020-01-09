@@ -22,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -58,7 +59,7 @@ public class MainPracaDomowa2a extends Application {
 
                 Rectangle clippedImage = new Rectangle(41, 41);
                 clippedImage.setStroke(Color.BLACK);
-                clippedImage.setFill(Color.WHITE);
+                clippedImage.setFill(Color.TRANSPARENT);
                 clippedImage.setStrokeWidth(3);
 
                 clippedImages.add(clippedImage);
@@ -79,9 +80,11 @@ public class MainPracaDomowa2a extends Application {
 
             Image image = new Image(
                     getClass().getResourceAsStream("test2.png"));
-                    //getClass().getResourceAsStream("test.png"));
+            // for tests
+            //getClass().getResourceAsStream("test.png"));
 
             gc.drawImage(image, 30, 30);
+            List<WritableImage> cutedImages= new ArrayList<>();
 
             canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -89,9 +92,41 @@ public class MainPracaDomowa2a extends Application {
                     PixelReader reader = image.getPixelReader();
                     WritableImage newImage = new WritableImage(reader, (int) event.getX() - 41, (int) event.getY() - 41, 41, 41);
 
-                    clippedImages.get(0).setFill(new ImagePattern(newImage));
+                    cutedImages.add(newImage);
+
+                   // int averageValueOfRed = calculateAvetageValueRed(newImage);
+
+                    List<WritableImage> cutedImagesSorter = cutedImages.sortByAverageValueOfRed();
+
+                    for(int i= 0 ; i<clippedImages.size(); i++){
+                        clippedImages.get(i).setFill(cutedImagesSorter.get(i));
+                    }
+
+
                     //TODO
 
+                }
+
+                private List<WritableImage> sortByAverageValueOfRed(){
+
+                    return
+                }
+
+                private int calculateAvetageValueRed(WritableImage newImage) {
+
+                    int pixel ;
+                    int redValue = 0;
+                    int width = (int) newImage.getWidth();
+                    int height = (int) newImage.getHeight();
+
+                    for (int x = 0; x < width; x++) {
+                        for (int y = 0; y < height; y++) {
+                            pixel = newImage.getPixelReader().getArgb(x,y);
+                            redValue += (pixel >> 16) & 0xff;
+                        }
+                    }
+
+                    return redValue / (width * height);
                 }
             });
 
