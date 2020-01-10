@@ -6,9 +6,19 @@
 	-fx-pref-width:130px;
 	}
 	
-#button1 {
-	-fx-background-color:cyan;
-	-fx-border-style:dashed;
-	-fx-border-width:5px;
-	-fx-font: bold 15pt "sans-serif";
+.my-button {
+	-fx-border-style:solid;
+	-fx-border-width:1px;
+	-fx-border-radius:10;
+	-fx-font: bold 20pt "sans-serif";
+	-fx-background-color:grey;
 	}
+
+.textField {
+	-fx-font: bold 15pt "sans-serif";
+}
+
+.image {
+   -fx-border-color: black;
+    -fx-border-width:20px;
+}

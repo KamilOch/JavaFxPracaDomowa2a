@@ -46,15 +46,23 @@ public class MainPracaDomowa2a extends Application {
             buttonBox.setPadding(new Insets(55));
             Button loadPictureButton = new Button("Wczytaj");
             Button clearButton = new Button("Czyść");
+
             buttonBox.getChildren().addAll(loadPictureButton, clearButton);
 
+            loadPictureButton.getStyleClass().add("my-button");
+            clearButton.getStyleClass().add("my-button");
+
             Label text = new Label("Wycinki w kolejności malejącej średniej wartości składowej czerwonej.");
+            text.getStyleClass().add("textField");
+            text.setWrapText(true);
+            text.setMaxWidth(300);
 
             GridPane clippedImagesGrid = new GridPane();
             clippedImagesGrid.addColumn(5);
             clippedImagesGrid.addRow(5);
             clippedImagesGrid.setHgap(20);
             clippedImagesGrid.setVgap(20);
+
 
             List<Rectangle> clippedImages = new ArrayList<>();
 
@@ -80,13 +88,25 @@ public class MainPracaDomowa2a extends Application {
 
             VBox buttonsLanelBox = new VBox();
             buttonsLanelBox.getChildren().addAll(buttonBox, text, clippedImagesGrid);
+            buttonsLanelBox.setSpacing(50);
 
             Image image = new Image(
-                    getClass().getResourceAsStream("test2.png"));
-            // for tests
-            //getClass().getResourceAsStream("test.png"));
+//                    getClass().getResourceAsStream("test.png"));
+            //for tests
+                    getClass().getResourceAsStream("test2.jpg"));
+//                    getClass().getResourceAsStream("test3.jpg"));
+//                    getClass().getResourceAsStream("test4.jpg"));
+//                    getClass().getResourceAsStream("test5.jpeg"));
+//                    getClass().getResourceAsStream("test6.jpg"));
+//                    getClass().getResourceAsStream("test7.jpeg"));
+
 
             gc.drawImage(image, 30, 30);
+
+            // stroke an outline (border) around the shape.
+            gc.setStroke(Color.GREEN);
+            gc.setLineWidth(10);
+            gc.stroke();
 
             List<CuttedElement> cuttedElements = new ArrayList<>();
 
@@ -107,6 +127,8 @@ public class MainPracaDomowa2a extends Application {
                     for (int i = 0; i < clippedImages.size(); i++) {
                         if (cutedImagesSorter.size() > i) {
                             clippedImages.get(i).setFill(new ImagePattern(cutedImagesSorter.get(i).getImage()));
+                            // sorting check
+                            System.out.println("Element " + i + " " + cutedImagesSorter.get(i).getAverageValueOfRed());
                         }
                     }
                 }
@@ -124,6 +146,7 @@ public class MainPracaDomowa2a extends Application {
             pictureAndInformation.getChildren().addAll(canvas, buttonsLanelBox);
             pictureAndInformation.setLayoutX(30);
             pictureAndInformation.setLayoutY(30);
+            pictureAndInformation.setSpacing(50);
 
             root.getChildren().add(pictureAndInformation);
 
